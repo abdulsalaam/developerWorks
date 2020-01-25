@@ -1,0 +1,140 @@
+/*
+ * developer : abdul@25-10-2018
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+namespace org.demo.theater
+
+
+abstract asset BookableObject identified by bookableId {
+  o String bookableId
+  o DateTime date optional
+}
+
+enum FoodType {
+  o water
+  o popcorn
+  o soda
+}
+
+enum playSlot {
+  o FIRST
+  o SECOND
+  o THIRD
+  o FOURTH
+}
+
+enum screenNames {
+  o OD1
+  o OD2
+  o OD3
+  o OD4
+  o OD5
+}
+
+asset Food identified by foodId {
+  o String foodId
+  o Integer price optional
+  o FoodType foodType default = "water"
+  o Integer maxQty optional
+}
+
+asset Movie identified by movieId {
+  o String movieId
+  o String title
+  o String genere
+  o Integer duration
+  o String director
+}
+
+asset Shows identified by showiId {
+  o String showiId
+  o screenNames screen default = "OD1"
+  o playSlot slot default = "FIRST"
+  o Integer numberOfSeats
+  o Double price
+  --> Movie movie
+}
+
+asset Booking extends BookableObject {
+  o Integer numberOfSeats
+  o Double orderPrice optional
+  --> Shows show
+  --> Users user
+  --> Food food optional
+}
+
+/**
+ * PARTICIPANTS
+ */
+
+concept Address {
+  o String country
+  o String city optional
+  o String street optional
+}
+
+participant Users identified by userId {
+  o String userId
+  o String name
+  o String email
+  o String country
+}
+
+abstract participant BookableObjectHolder identified by holderId {
+  o String holderId
+}
+
+participant Theater extends BookableObjectHolder {
+  o String TheaterName
+  o Address address
+}
+  
+/**
+ * TRANSACTIONS
+ */
+
+transaction InitTestData {
+}
+
+transaction ClearData {
+}
+
+
+transaction BookMovie{
+   o Integer numberOfSeats
+  --> Shows show
+  --> Users user
+  --> Food food
+}
+
+
+transaction BookMovieFoodExchange {
+  --> Booking booking
+  //o Integer bookableId
+  --> Food food
+}
+ 
+/**
+ * EVENTS
+ */  
+event ObjectReservered {
+  --> BookableObject object
+}
+
+  
+event ObjectExchanged {
+ --> BookableObject object
+ --> Food to 
+}  
+  

@@ -1,0 +1,31 @@
+/**
+ * developer : abdul@25-10-2018
+ * New query file
+ */
+
+query selectBookings {
+  description: "Select all moview booking"
+  statement:
+      SELECT org.demo.theater.Booking
+}
+
+query selectBookingsByShow {
+  description: "Select all booking based on their show"
+  statement:
+      SELECT org.demo.theater.Booking
+          WHERE (show==_$show)
+}
+
+query selectBookingsByUser {
+  description: "Select all bookings based on their user"
+  statement:
+      SELECT org.demo.theater.Booking
+          WHERE (user == _$user)
+}
+
+query selectBookingsByFood {
+  description: "Select commodities based on food"
+  statement:
+      SELECT org.demo.theater.Booking
+          WHERE (food == _$food)
+}
